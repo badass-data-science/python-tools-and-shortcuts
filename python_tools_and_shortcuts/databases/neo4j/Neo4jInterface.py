@@ -1,5 +1,6 @@
 import time
 from neo4j import GraphDatabase
+from neo4j import Result
 
 class Neo4jInterface():
     def __init__(
