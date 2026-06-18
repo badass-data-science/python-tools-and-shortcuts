@@ -1,6 +1,6 @@
 import os
 
-from tools_and_shortcuts.ai.llm.token_count_estimation import estimate_token_count_by_rules_of_thumb
+#from python_tools_and_shortcuts.ai.llm.token_count_estimation import estimate_token_count_by_rules_of_thumb
 
 class OllamaInator():
 
@@ -47,10 +47,10 @@ def main():
     print('Tokens (prompt):', dict_response['tokens_prompt'])
     print('Tokens (response):', dict_response['tokens_response'])
     print()
-    print(estimate_token_count_by_rules_of_thumb(dict_response['response_text'], return_consensus_only = True))
+    #print(estimate_token_count_by_rules_of_thumb(dict_response['response_text'], return_consensus_only = True))
     #print(len(prompt))
     #print(len(dict_response['response_text']))
-    print()
+    #print()
     print(dict_response['response_text'])
     print()
     
