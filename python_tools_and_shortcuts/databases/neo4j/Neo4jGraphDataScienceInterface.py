@@ -1,6 +1,6 @@
 from graphdatascience import GraphDataScience
 
-from Neo4jInterface import Neo4jInterface
+from python_tools_and_shortcuts.databases.neo4j.Neo4jInterface import Neo4jInterface
 
 class Neo4jGraphDataScienceInterface(Neo4jInterface):
     
