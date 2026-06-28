@@ -66,6 +66,12 @@ class FuzzyInterpolator():
     def interpolate_membership(self, value_to_interpolate):
 
         #
+        # calculate the range to return
+        #
+        report_range_min = np.min([value_to_interpolate, self.min_to_use])
+        report_range_max = np.max([value_to_interpolate, self.max_to_use])
+        
+        #
         # deal with extreme values
         #
         if value_to_interpolate < self.min_to_use:
@@ -74,11 +80,21 @@ class FuzzyInterpolator():
             value_to_interpolate = self.max_to_use
 
         #
+        # initialize return object
+        #
+        dict_interpolated_membership = {
+            'fuzzy set membership' : {},
+            'value range' : {
+                'minimum' : float(report_range_min),
+                'maximum' : float(report_range_max),
+            },
+        }
+            
+        #
         # compute degree of set membership
         #
-        dict_interpolated_membership = {}
         for set_name in self.list_ordered_set_names:
-            dict_interpolated_membership[set_name] = float(
+            dict_interpolated_membership['fuzzy set membership'][set_name] = float(
                 fuzz.interp_membership(self.domain, self.dict_mf[set_name], value_to_interpolate)
             )
             
