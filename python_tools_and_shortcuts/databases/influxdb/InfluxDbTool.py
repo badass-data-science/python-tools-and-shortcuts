@@ -93,7 +93,7 @@ class InfluxDbTool():
 
         if '_time' in df.columns:
             df['_time'] = pd.to_datetime(df['_time'])
-            df['unix_epoch_s'] = df['_time'].view('int64') // 10**9
+            df['unix_epoch_s'] = df['_time'].astype('int64') // 10**9
             df.drop(columns = ['_time'], inplace = True)
             column_list = ['unix_epoch_s']
             column_list.extend([x for x in df.columns if not x == 'unix_epoch_s'])
