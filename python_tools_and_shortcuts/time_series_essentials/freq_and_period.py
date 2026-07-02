@@ -7,16 +7,15 @@
 # load useful libraries
 #
 import numpy as np
-from .config.precision_config import float_tse
 
 
-def get_period_in_seconds_from_frequency_in_hertz(frequency : float_tse) -> float_tse:
+def get_period_in_seconds_from_frequency_in_hertz(frequency : np.float64) -> np.float64:
     return 1. / frequency
 
-def get_frequency_in_hertz_from_period_in_seconds(period : float_tse) -> float_tse:
+def get_frequency_in_hertz_from_period_in_seconds(period : np.float64) -> np.float64:
     return 1. / period
 
-def get_sinusoidal_period_from_frequency_in_hertz(frequency : float_tse) -> float_tse:
+def get_sinusoidal_period_from_frequency_in_hertz(frequency : np.float64) -> np.float64:
     return frequency * 2. * np.pi
 
 #
