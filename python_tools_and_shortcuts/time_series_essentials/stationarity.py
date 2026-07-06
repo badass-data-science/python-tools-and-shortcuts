@@ -2,11 +2,9 @@ import numpy as np
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
 
-from .config.precision_config import float_tse, int_tse
-
 def compute_verbose_adf_dict(
     time_series : np.array,
-    p_value_cutoff : float_tse = 0.05,
+    p_value_cutoff : np.float64 = 0.05,
     autolag : str = 'AIC',
 ) -> dict:
 
@@ -101,7 +99,7 @@ def compute_verbose_adf_dict(
     }
 
     for key, value in adf_result[4].items():
-        adf_result_dict['critical_values'][key] =  float_tse(value)
+        adf_result_dict['critical_values'][key] =  np.float64(value)
 
     return adf_result_dict
 
