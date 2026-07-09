@@ -78,6 +78,24 @@ class InfluxDbTool():
             print(f"Error deleting bucket: {e}")
 
     #
+    # Convert a column of timestamps (any precision or tz-awareness, or plain
+    # strings) to whole unix-epoch seconds. Normalizes to UTC-aware first (via
+    # pd.to_datetime(..., utc=True) -- real InfluxDB `_time` values are already
+    # tz-aware, and naive input is assumed to already be UTC), then explicitly
+    # upcasts to nanosecond precision BEFORE dividing by 10**9 -- pandas/the
+    # influxdb client don't always hand back the same precision (a pivoted Flux
+    # query result parses to datetime64[ns, UTC], but a non-pivoted one has been
+    # observed to parse to datetime64[us, UTC] instead), and dividing an
+    # already-microsecond int64 by 10**9 silently produces a value 1000x too
+    # small with no error. Staying tz-aware throughout the upcast matters: casting
+    # straight to a tz-naive dtype (e.g. 'datetime64[ns]') raises on tz-aware
+    # input in current pandas rather than silently dropping the offset.
+    #
+    @staticmethod
+    def _time_column_to_unix_epoch_s(time_series : pd.Series) -> pd.Series:
+        return pd.to_datetime(time_series, utc = True).astype('datetime64[ns, UTC]').astype('int64') // 10**9
+
+    #
     # Run a Flux query
     #
     def run_flux_query_on_forex_database_and_get_dataframe(self, query : str) -> pd.DataFrame:
@@ -92,13 +110,12 @@ class InfluxDbTool():
                 df.drop(columns = [column_name], inplace = True)
 
         if '_time' in df.columns:
-            df['_time'] = pd.to_datetime(df['_time'])
-            df['unix_epoch_s'] = df['_time'].astype('int64') // 10**9
+            df['unix_epoch_s'] = InfluxDbTool._time_column_to_unix_epoch_s(df['_time'])
             df.drop(columns = ['_time'], inplace = True)
             column_list = ['unix_epoch_s']
             column_list.extend([x for x in df.columns if not x == 'unix_epoch_s'])
             df = df[column_list]
-            
+
         return df
 
     #

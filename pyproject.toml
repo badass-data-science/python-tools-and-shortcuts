@@ -13,7 +13,17 @@ dependencies = [
     "statsmodels>=0.14",
     "nltk>=3.8",
     "neo4j>=5.0",
+    "influxdb-client>=1.36",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
 
 [build-system]
 requires = ["hatchling"]
